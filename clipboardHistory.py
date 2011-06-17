@@ -5,7 +5,7 @@ import math, time
 _clipboardHistory = ['']
 _clipboardIndex = 0
 
-class ClipboardHistoryBase(sublime_plugin.ApplicationCommand):
+class ClipboardHistoryBase(sublime_plugin.TextCommand):
   # gets/sets the sublime clipboard
   def clipboard(self, content=None):
     if content == None:
@@ -41,47 +41,45 @@ class ClipboardHistoryBase(sublime_plugin.ApplicationCommand):
     return self.clipboard() == self.top()
 
   def run_command(self, command):
-    view = sublime.active_window().active_view()
-    if view != None:
-      view.run_command(command)
-      # I know this is hideous, and I sincerely apologize, but it works
-      # I was getting non deterministic behavior in which the clipboard seemingly randomly returned stale data.
-      time.sleep(0.1)
+    self.view.run_command(command)
+    # I know this is hideous, and I sincerely apologize, but it works
+    # I was getting non deterministic behavior in which the clipboard seemingly randomly returned stale data.
+    time.sleep(0.1)
 
 
 class ClipboardHistoryPaste(ClipboardHistoryBase):
-  def run(self):
+  def run(self, edit):
     # If the user pastes something that was copied in a different program, it will not be in sublime's buffer, so we attempt to append every time
     self.appendClipboard()
     self.run_command('paste')
 
 class ClipboardHistoryPasteAndIndent(ClipboardHistoryBase):
-  def run(self):
+  def run(self, edit):
     self.appendClipboard()
     self.run_command('paste_and_indent')
 
 class ClipboardHistoryCut(ClipboardHistoryBase):
-  def run(self):
+  def run(self, edit):
     # First run sublime's command to extract the selected text.
     # This will set the cut/copy'd data on the clipboard which we can easily steal without recreating the cut/copy logic.
     self.run_command('cut')
     self.appendClipboard()
 
 class ClipboardHistoryCopy(ClipboardHistoryBase):
-  def run(self):
+  def run(self, edit):
     self.run_command('copy')
     self.appendClipboard()
 
 class ClipboardHistoryNext(ClipboardHistoryBase):
-  def run(self):
+  def run(self, edit):
     self.next()
 
 class ClipboardHistoryPrevious(ClipboardHistoryBase):
-  def run(self):
+  def run(self, edit):
     self.previous()
 
 class ClipboardHistoryVisualize(ClipboardHistoryBase):
-  def run(self):
+  def run(self, edit):
     def escapeLine(line):
       return ' ' + line.replace('\\', '\\\\').replace('\n', '\\n').replace('\r', '\\r')
 
