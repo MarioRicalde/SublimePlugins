@@ -1,0 +1,225 @@
+#scheduleContainer {
+  float: left; }
+
+.timeSelectContainer {
+  /*background-color: rgba(100, 100, 100, .5);*/
+  display: block;
+  left: 105px;
+  position: relative;
+  top: 23px;
+  width: 530px; }
+
+.selection {
+  background: #548DD4;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#548dd4), to(#4b7ebe));
+  background: -moz-linear-gradient(top, #5894de, #4f85c9);
+  border: 1px solid #0000FF;
+  height: 0px;
+  opacity: 0.6;
+  position: absolute;
+  width: 98px; }
+
+.startTimeLabel, .endTimeLabel {
+  background: #FEFEFE;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(0, 0, 255, 0.6);
+  cursor: default;
+  display: none;
+  font-size: 12px;
+  height: 14px;
+  padding: 2px 0px 2px 0px;
+  position: absolute;
+  text-align: center;
+  width: 99px; }
+
+.startTimeLabel {
+  border-bottom: 0px;
+  border-radius: 5px 5px 0px 0px; }
+
+.endTimeLabel {
+  border-radius: 0px 0px 5px 5px;
+  border-top: 0px; }
+
+.scheduleInnerContainer {
+  position: relative;
+  width: 638px;
+  /*Column Headings */
+  /*Row Headings */
+  /*A course */ }
+  .scheduleInnerContainer.haveSaturday {
+    width: 742px; }
+  .scheduleInnerContainer .scheduleCell {
+    position: absolute;
+    width: 98px; }
+  .scheduleInnerContainer .scheduleColumn0 {
+    left: 0px; }
+  .scheduleInnerContainer .scheduleColumn1 {
+    left: 106px; }
+  .scheduleInnerContainer .scheduleColumn2 {
+    left: 212px; }
+  .scheduleInnerContainer .scheduleColumn3 {
+    left: 318px; }
+  .scheduleInnerContainer .scheduleColumn4 {
+    left: 424px; }
+  .scheduleInnerContainer .scheduleColumn5 {
+    left: 530px; }
+  .scheduleInnerContainer .scheduleColumn6 {
+    left: 636px; }
+  .scheduleInnerContainer .scheduleDay {
+    color: #444444;
+    font-weight: bold;
+    padding: 0 3px 3px 3px;
+    text-align: center;
+    top: 6px; }
+  .scheduleInnerContainer .scheduleTime {
+    color: #444444;
+    padding: 1px 3px;
+    text-align: right; }
+  .scheduleInnerContainer .scheduleHourMark {
+    border-top: 1px dotted #EEE;
+    left: 2px;
+    position: absolute;
+    width: 634px; }
+  .scheduleInnerContainer .scheduleCourse, .scheduleInnerContainer .filteredTime {
+    border: 1px solid #555555;
+    border-radius: 5px;
+    -moz-border-radius: 5px;
+    box-shadow: 2px 2px 4px #BBB;
+    -moz-box-shadow: 2px 2px 4px #BBB;
+    text-align: center;
+    vertical-align: middle; }
+  .scheduleInnerContainer .credits {
+    font-weight: bold;
+    position: absolute;
+    right: 2px;
+    top: -18px; }
+  .scheduleInnerContainer .scheduleColor-0 {
+    box-shadow: 2px 2px 6px #7f9bbf;
+    -moz-box-shadow: 2px 2px 6px #7f9bbf; }
+  .scheduleInnerContainer .scheduleColor-6 {
+    box-shadow: 2px 2px 6px #7c95b3;
+    -moz-box-shadow: 2px 2px 6px #7c95b3; }
+  .scheduleInnerContainer .scheduleColor-5 {
+    box-shadow: 2px 2px 6px #b57d7b;
+    -moz-box-shadow: 2px 2px 6px #b57d7b; }
+  .scheduleInnerContainer .scheduleColor-2 {
+    box-shadow: 2px 2px 6px #a2b281;
+    -moz-box-shadow: 2px 2px 6px #a2b281; }
+  .scheduleInnerContainer .scheduleColor-3 {
+    box-shadow: 2px 2px 6px #aea5b8;
+    -moz-box-shadow: 2px 2px 6px #aea5b8; }
+  .scheduleInnerContainer .scheduleColor-4 {
+    box-shadow: 2px 2px 6px #7aabb8;
+    -moz-box-shadow: 2px 2px 6px #7aabb8; }
+  .scheduleInnerContainer .scheduleColor-1 {
+    box-shadow: 2px 2px 6px #d0a078;
+    -moz-box-shadow: 2px 2px 6px #d0a078; }
+  .scheduleInnerContainer .scheduleConflict {
+    color: #C00D1A; }
+  .scheduleInnerContainer .noCourses {
+    color: #555555;
+    padding: 5px 10px;
+    text-align: center; }
+  .scheduleInnerContainer .filteredTime {
+    /* nosort */
+    background-color: #acacac;
+    background: -moz-linear-gradient(top, #acacac, #9a9a9a);
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#acacac), to(#9a9a9a));
+    background: linear-gradient(top, #acacac, #9a9a9a);
+    border-color: #777777 !important;
+    text-shadow: 1px 1px #cecece;
+    color: #FFFFFF;
+    text-shadow: 1px 1px #777; }
+
+/* Conflict Dialog and Sidebar */
+.actionList {
+  list-style-type: none;
+  margin: 0;
+  margin-bottom: 2px;
+  padding: 0; }
+  .actionList li {
+    border-bottom: 1px solid #BBBBBB;
+    margin: 0 10px;
+    padding: 2px 0 2px 5px; }
+    .actionList li:hover {
+      background-color: #DDDDDD;
+      cursor: pointer; }
+
+.sidebar {
+  padding: 0 2px; }
+  .sidebar .actionList li {
+    margin: 0;
+    padding: 5px 0 5px 5px; }
+  .sidebar .actionList .activeSchedule {
+    background-color: #EEE; }
+
+.scheduleSidebar .sidebar {
+  min-width: 145px; }
+
+.scheduleSidebar, #enrollmentSidebar {
+  float: left;
+  width: 180px; }
+
+.sidebarCourses {
+  list-style-type: none;
+  margin: 0;
+  padding: 0; }
+  .sidebarCourses li {
+    border-style: solid;
+    border-width: 1px 0;
+    margin: 3px 0px;
+    padding: 3px 0 3px 5px; }
+  .sidebarCourses li.noCourses {
+    border: none;
+    color: #555555;
+    padding-left: 0;
+    text-align: center; }
+
+.popupContainer {
+  position: relative; }
+
+.schedulePopupMenu {
+  display: none;
+  position: absolute;
+  text-shadow: none;
+  z-index: 999; }
+  .schedulePopupMenu .drillDownRow {
+    /* Override styles from sidebar */
+    border: 0px !important;
+    margin: 0 !important;
+    padding-right: 10px;
+    padding-top: 2px; }
+    .schedulePopupMenu .drillDownRow a {
+      color: #000000;
+      text-decoration: none; }
+
+.popupContainer:hover .schedulePopupMenu,
+.schedulePopupMenu:hover {
+  display: block; }
+
+.sidebarCourses .schedulePopupMenu {
+  right: -139px;
+  top: -12px; }
+
+.schedule .schedulePopupMenu {
+  right: -130px;
+  top: -12px; }
+
+.schedule .scheduleCourse:hover .schedulePopupMenu {
+  display: block; }
+
+#enrollmentSidebar dl {
+  margin: 0;
+  padding: 0; }
+  #enrollmentSidebar dl dt {
+    color: #444444;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 3px 0 0 0;
+    padding: 0; }
+  #enrollmentSidebar dl dd {
+    margin: -1px 0 0 0;
+    padding: 2px; }
+#enrollmentSidebar em {
+  font-size: 12px;
+  padding-top: 10px; }
