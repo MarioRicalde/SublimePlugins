@@ -2,7 +2,7 @@ import sublime, sublime_plugin
 import re, os
 
 blockScope = u'meta.property-list.css source.css'
-nameScope = u'support.type.property-name.css'
+nameScope = u'meta.property-name.css'
 valueScope = u'meta.property-value.css'
 language = u'Packages/CSS/CSS.tmLanguage'
 
@@ -11,14 +11,14 @@ class CssSorter:
     self.view = view
     #print self.view.lines(sublime.Region(0, self.view.size()))
     #print self.view.visible_region()
-    #region = self.view.visible_region()
+    region = self.view.visible_region()
     #half = (region.b - region.a) / 2
     #top = min(region.a + half, self.view.size())
     #print top
 
     self.parseBlocks()
 
-    #self.view.show_at_center(top)
+    self.view.show(region.a)
     #self.view.show_at_center(region)
 
   def parseBlocks(self):
@@ -82,10 +82,15 @@ class CssSorter:
       if ruleValueStart == None:
         break
 
-      rule = self.view.substr(sublime.Region(start, ruleValueEnd))
-      sortRule = re.sub(r'^\-[a-zA-Z]+\-', '', self.view.substr(sublime.Region(ruleNameStart, ruleValueEnd)).strip())
-      sortName = sortRule.split(':')[0].strip()
-      rules.append({'rule': rule, 'sortRule': sortRule, 'sortName': sortName})
+      data = {'rule': self.view.substr(sublime.Region(start, ruleValueEnd))}
+      data['sortRule'] = self.view.substr(sublime.Region(ruleNameStart, ruleValueEnd)).strip()
+      data['sortPrefix'] = ''
+      match = re.match(r'^(\-[a-zA-Z]+\-)(.*)', data['sortRule'])
+      if match != None:
+        data['sortRule'] = match.group(2)
+        data['sortPrefix'] = match.group(1)
+      data['sortName'] = data['sortRule'].split(':')[0].strip()
+      rules.append(data)
 
       start = ruleValueEnd
 
@@ -97,7 +102,7 @@ class CssSorter:
   # Lastly -moz- and such should be ignored
   def compareLines(self, a, b):
     if a['sortName'] == b['sortName']:
-      return 0
+      return cmp(a['sortPrefix'], b['sortPrefix'])
 
     if a['sortName'].startswith(b['sortName']):
       return 1
