@@ -5,15 +5,15 @@
     position: relative; }
     .messageBox .messageBoxInnerContainer .closeButton {
       background-image: url(/images/spritesExport.png?1302145525);
-      background-position: left -700px;
       background-repeat: no-repeat;
+      background-position: left -700px;
       height: 30px;
+      width: 30px;
       position: absolute;
-      right: 0px;
-      right: -15px;
       top: 0px;
+      right: 0px;
       top: -15px;
-      width: 30px; }
+      right: -15px; }
   .messageBox .messageBoxButtons {
     border-top: 1px solid #DDD;
     margin-top: 20px;
@@ -26,20 +26,20 @@
     background: #333333 url(/images/buttonGradiant.png?1302145525) repeat-x;
     border: none;
     border-bottom: 1px solid rgba(0, 0, 0, 0.25);
+    -webkit-border-radius: 5px;
     border-radius: 5px;
     -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
     cursor: pointer;
     display: inline-block;
     font-family: Arial;
-    font-size: 13px;
     font-weight: bold;
-    margin: 0 3px;
+    font-size: 13px;
     padding: 3px 6px 4px;
     position: relative;
+    margin: 0 3px;
     text-decoration: none;
     text-shadow: 0 -1px 1px rgba(0, 0, 0, 0.25); }
   .messageBox input[type="button"]:hover,
@@ -68,38 +68,38 @@
   border: none;
 }
 .test2 {
-  border: none;
-  border-bottom-width: 1px;
   -moz-border-radius: 1px;
   border-top-width: 1px;
+  border: none;
+  border-bottom-width: 1px;
 }
 .test3     {
-border: none;
-     border-bottom-width: 1px;
   -moz-border-radius:1px;
   border-top-width:                    1px;
+border: none;
+     border-bottom-width: 1px;
     }
-.test4 {border: none;border-bottom-width: 1px;-moz-border-radius: 1px;border-top-width: 1px;}
-.test5{border: none;border-bottom-width: 1px;-moz-border-radius: 1px;border-top-width: 1px;}
-.test6 { border: none; border-bottom-width: 1px; -moz-border-radius: 1px; border-top-width: 1px; }
-.test7{border: none;border-bottom-width: 1px;-moz-border-radius: 1px;border-top-width: 1px;}.test8{border: none;border-bottom-width: 1px;-moz-border-radius: 1px;border-top-width: 1px;}
+.test4 {-moz-border-radius: 1px;border-top-width: 1px;border: none;border-bottom-width: 1px;}
+.test5{-moz-border-radius: 1px;border-top-width: 1px;border: none;border-bottom-width: 1px;}
+.test6 { -moz-border-radius: 1px; border-top-width: 1px; border: none; border-bottom-width: 1px; }
+.test7{-moz-border-radius: 1px;border-top-width: 1px;border: none;border-bottom-width: 1px;}.test8{-moz-border-radius: 1px;border-top-width: 1px;border: none;border-bottom-width: 1px;}
 
 .comment1 {
   /* test */
   border: none;
 }
 .comment2 {
-  /* test2 */
-  background: none;
   /* test1 */
   border: none;
+  /* test2 */
+  background: none;
 }
 .comment3 {
   border:/* test1 */none/* test2 */;
 }
 .comment4 {
-  background:/* test3 */none/* test4 */;
   border:/* test1 */none/* test2 */;
+  background:/* test3 */none/* test4 */;
   color:/* test5 */none/* test6 */;
 }
 .comment5 {

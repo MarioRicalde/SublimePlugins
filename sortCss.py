@@ -1,53 +1,115 @@
 import sublime, sublime_plugin
-import re, os
+import re, os, time
 
-blockScope = u'meta.property-list.css source.css'
-nameScope = u'meta.property-name.css'
-valueScope = u'meta.property-value.css'
-language = u'Packages/CSS/CSS.tmLanguage'
+# The Sorter now looks for various scopes.  Below is a whitelist of allowed scopes.
+# 'list' are the scopes than can be a substring in a list of css rules
+# at a basic level, it will look for any amount of whitespace or text that is in the 'ignores' scope
+# followed by text from the first element of a 'rule'
+#that repeats for each element of the rule, like <whitespace/comment>name</whitespace/comment>value
+scopes = {
+  'source.css': {
+    'list': [
+      'meta.property-list.css'
+    ],
+    'rules': [
+      ['meta.property-name.css', 'meta.property-value.css']
+    ],
+    'ignore': [
+      'comment.block.css'
+    ]
+  },
+
+  'source.scss': {
+    'list': [
+      'meta.property-list.css',
+      'meta.at-rule.mixin.scss'
+    ],
+    'rules': [
+      ['meta.property-name.css', 'meta.property-value.css'],
+      ['meta.set.variable'],
+      ['variable.scss', 'meta.property-value.css'],
+      ['meta.at-rule.include.css']
+    ],
+    'ignore': [
+      'comment.block.scss'
+    ]
+  }
+}
 
 class CssSorter:
-  def __init__(self, view):
+  def __init__(self, view, start=0, end=None):
     self.view = view
-    #print self.view.lines(sublime.Region(0, self.view.size()))
-    #print self.view.visible_region()
-    region = self.view.visible_region()
-    #half = (region.b - region.a) / 2
-    #top = min(region.a + half, self.view.size())
-    #print top
+    if end == None:
+      end = self.view.size()
+    self.parseBlocks(start, end)
 
-    self.parseBlocks()
+  # Returns true if any of the scopes in target are a substring of scope
+  def matchesScope(self, scope, targetScopes):
+    for targetScope in targetScopes:
+      if scope.find(targetScope) >= 0:
+        return True
+    return False
 
-    self.view.show(region.a)
-    #self.view.show_at_center(region)
+  # Returns true if scope contains any of the scopes in rules or ignore
+  def ignorable(self, scope):
+    for rule in self.scopes['rules']:
+      for ruleScope in rule:
+        if scope.find(ruleScope) >= 0:
+          return True
 
-  def parseBlocks(self):
+    return self.matchesScope(scope, self.scopes['ignore'])
+
+  def parseBlocks(self, start, selectionEnd):
     start = 0
-    while start < self.view.size():
-      # quick hack to jump to the start of a property list
+    while start < selectionEnd:
+      # quick hack to jump to the start of a rule list
       region = self.view.find(u'{', start, sublime.LITERAL)
       if region == None:
         break
 
+      start = region.a+1
+      scope = self.view.scope_name(region.a)
+      syntax = scope.strip().split(' ')[-1]
+      if not syntax in scopes:
+        continue
+      self.scopes = scopes[syntax]
+
       # ensure we are at the start of a property list and not in a string
-      if self.view.scope_name(region.a).find(blockScope) < 0:
-        start = region.a + 1
+      if not self.matchesScope(scope, self.scopes['list']):
         continue
 
       # iterate to find the end of the contiuous property list section
       # The below css declaration returns a property list scope region that ends at the first colon of the first rule
       # So, in this case, we have to keep iterating as long as the regions/scopes contain property-list.css
       # .test4 {-moz-border-radius: 1px;border-top-width: 1px;border: none;border-bottom-width: 1px;}
-      end = self.view.extract_scope(region.a).b
-      while True:
-        if self.view.scope_name(end).find(blockScope) < 0:
-          break
-        end = self.view.extract_scope(end).b
-
-      self.parseBlock(region.a+1, end)
+      end = self.parseableRegion(start)
+      self.parseBlock(start, end)
       start = end
 
+  def parseableRegion(self, start):
+    while True:
+      c = self.view.substr(start)
+      if c == ' ' or c == '\n':
+        start += 1
+        continue
+
+      scope = self.view.scope_name(start)
+      if self.ignorable(scope):
+        # advance to the end of the region, like the end of a name property
+        region = self.view.extract_scope(start)
+        if region.b == start:
+          return start
+        start = region.b
+      else:
+        # semicolons after @include aren't included with the rule so we have to ignore that in a semi-generic way
+        if scope.startswith(self.scopes['list'][0]):
+          start += 1
+        else:
+          # we hit a non-rule like a nested selector
+          return start
+
   def parseBlock(self, start, end):
+    # grab the current content in this region
     region = sublime.Region(start, end)
     existingContent = self.view.substr(region)
 
@@ -55,10 +117,12 @@ class CssSorter:
     if re.search(r'/\*\s*nosort\s*\*/', existingContent) != None:
       return
 
-    rules, tail = self.parseRules(start, end)
+    rules, tailStart = self.parseRules(start, end)
+    #print 'parseRulesReturned', rules, start, end, tailStart, tailEnd, parseEnd
     if rules == None or len(rules) == 0:
       return
     rules.sort(self.compareLines)
+    tail = self.view.substr(sublime.Region(tailStart, end))
 
     output = map(lambda rule: rule['rule'], rules)
     output = (''.join(output))+tail
@@ -69,32 +133,54 @@ class CssSorter:
       self.view.replace(editObject, region, output)
       self.view.end_edit(editObject)
 
+  def prepareRule(self, start, ruleStart, ruleEnd):
+    data = {'rule': self.view.substr(sublime.Region(start, ruleEnd))}
+    data['sortRule'] = self.view.substr(sublime.Region(ruleStart, ruleEnd)).strip()
+    data['sortPrefix'] = ''
+    match = re.match(r'^(\-[a-zA-Z]+\-)(.*)', data['sortRule'])
+    if match != None:
+      data['sortRule'] = match.group(2)
+      data['sortPrefix'] = match.group(1)
+    data['sortName'] = data['sortRule'].split(':')[0].strip()
+    return data
+
+
   def parseRules(self, start, end):
     rules = []
     while start < end:
-      ruleNameStart, ruleNameEnd = self.parseToScope(start, end, nameScope)
-      #print 'N%s %s' % (ruleNameStart, ruleNameEnd)
-      if ruleNameStart == None:
+      matchedRule = False
+      # at each location, any one of the rules could match
+      # each rule is a sequence of scopes that can only be separated by whitespace or something from the ignores block
+      for rule in self.scopes['rules']:
+        bounds, searchStart = [], start
+        for scope in rule:
+          ruleStart, ruleEnd = self.parseToScope(searchStart, end, scope)
+          if ruleStart == None:
+            break
+
+          bounds.append([ruleStart, ruleEnd])
+          if searchStart == ruleEnd:
+            break
+          searchStart = ruleEnd
+
+        # if there isn't a start/end pair for each rule, then one of them didn't match
+        if len(bounds) != len(rule):
+          continue
+
+        ruleStart, ruleEnd = bounds[0][0], bounds[-1][1]
+
+        # The @include scopes do not include the trailing semi colon :(
+        while self.view.substr(ruleEnd) == u';':
+          ruleEnd += 1
+
+        rules.append(self.prepareRule(start, ruleStart, ruleEnd))
+        start, matchedRule = ruleEnd, True
         break
 
-      ruleValueStart, ruleValueEnd = self.parseToScope(ruleNameEnd, end, valueScope)
-      #print 'V%s %s' % (ruleValueStart, ruleValueEnd)
-      if ruleValueStart == None:
+      if not matchedRule:
         break
 
-      data = {'rule': self.view.substr(sublime.Region(start, ruleValueEnd))}
-      data['sortRule'] = self.view.substr(sublime.Region(ruleNameStart, ruleValueEnd)).strip()
-      data['sortPrefix'] = ''
-      match = re.match(r'^(\-[a-zA-Z]+\-)(.*)', data['sortRule'])
-      if match != None:
-        data['sortRule'] = match.group(2)
-        data['sortPrefix'] = match.group(1)
-      data['sortName'] = data['sortRule'].split(':')[0].strip()
-      rules.append(data)
-
-      start = ruleValueEnd
-
-    return rules, self.view.substr(sublime.Region(start, end))
+    return rules, start
 
   # This is a custom sorting function for the css rules
   # If there are duplicate rule names, then they should remain in the same order, regardless of value
@@ -115,15 +201,23 @@ class CssSorter:
   # It continues parsing until it finds the last instance of that scope
   # It stops if it exceeds blockEnd
   def parseToScope(self, start, blockEnd, targetScope):
-    # Find the first instance of scope
     while start < blockEnd:
-      # Ignoring whitespace is purely an optimization
       c = self.view.substr(start)
-      if c != ' ' and c != '\n':
-        scope = self.view.scope_name(start).strip()
-        if scope.find(targetScope) >= 0:
+      if c == ' ' or c == '\n':
+        start += 1
+        continue
+
+      scope = self.view.scope_name(start).strip()
+      #print 'parseTo1', scope, start, c
+      if scope.find(targetScope) >= 0:
+        break
+      elif self.matchesScope(scope, self.scopes['ignore']):
+        region = self.view.extract_scope(start)
+        if region.b == start:
           break
-      start += 1
+        start = region.b
+      else:
+        return None, None
 
     # If the loop didn't break early, then we did not find the scope
     if start >= blockEnd:
@@ -139,6 +233,7 @@ class CssSorter:
 
       # Make sure it is still part of the scope region
       scope = self.view.scope_name(end)
+      #print 'parseTo2', end, region, scope, targetScope
       if scope.find(targetScope) < 0:
         break
 
@@ -150,13 +245,21 @@ class CssSorter:
 
 class SortCss(sublime_plugin.TextCommand):
   def run(self, edit):
-    CssSorter(self.view)
+    selections = self.view.sel()
+    if len(selections) == 0:
+      CssSorter(self.view)
+    elif len(selections) == 1 and selections[0].a == selections[0].b:
+      CssSorter(self.view)
+    else:
+      for selection in selections:
+        start, end = min(selection.a, selection.b), max(selection.a, selection.b)
+        CssSorter(self.view, start, end)
+
 
 class SortCssListener(sublime_plugin.EventListener):
   def on_pre_save(self, view):
     if view.settings().get('sort_css_on_save', True):
-      if view.settings().get('syntax') == language:
-        CssSorter(view)
+      CssSorter(view)
 
 class TestSortCss(sublime_plugin.WindowCommand):
   def run(self):
