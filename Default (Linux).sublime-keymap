@@ -5,6 +5,5 @@
   { "keys": ["ctrl+pagedown"], "command": "next_view_in_stack" },
   { "keys": ["ctrl+pageup"], "command": "prev_view_in_stack" },
 
-  { "keys": ["alt+up"],  "command": "inc_dec_number", "args": { "delta": 1} },
-  { "keys": ["alt+down"], "command": "inc_dec_number", "args": { "delta": -1} }
+  { "keys": ["ctrl+shift+t"], "command": "print_theme_rule"}
 ]
