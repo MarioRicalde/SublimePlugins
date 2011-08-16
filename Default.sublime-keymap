@@ -1,0 +1,26 @@
+[
+
+  { "keys": ["ctrl+tab"], "command": "next_view" },
+  { "keys": ["ctrl+shift+tab"], "command": "prev_view" },
+
+  { "keys": ["ctrl+pagedown"], "command": "next_view_in_stack" },
+  { "keys": ["ctrl+pageup"], "command": "prev_view_in_stack" },
+
+  { "keys": ["ctrl+x"], "command": "clipboard_history_cut" },
+  { "keys": ["ctrl+c"], "command": "clipboard_history_copy" },
+  { "keys": ["ctrl+v"], "command": "clipboard_history_paste" },
+  { "keys": ["ctrl+alt+v"], "command": "clipboard_history_paste" },
+
+  { "keys": ["ctrl+shift+x"], "command": "cut" },
+  { "keys": ["ctrl+shift+c"], "command": "copy" },
+  { "keys": ["ctrl+shift+v"], "command": "paste" },
+  { "keys": ["ctrl+alt+shift+v"], "command": "clipboard_history_paste" },
+
+  { "keys": ["ctrl+pagedown"], "command": "clipboard_history_next" },
+  { "keys": ["ctrl+pageup"], "command": "clipboard_history_previous" },
+  { "keys": ["ctrl+shift+pageup"], "command": "clipboard_history_visualize" },
+
+  { "keys": ["ctrl+shift+q"], "command": "example" },
+  { "keys": ["ctrl+alt+q"], "command": "sort_css" },
+  { "keys": ["ctrl+shift+t"], "command": "print_theme_rule"}
+]

@@ -17,6 +17,11 @@
 	"highlight_line": true,
 	"default_line_ending": "unix",
 	"shift_tab_unindent": true,
+	"default_line_ending": "unix",
+	"highlight_word_theme_selector": "currentword",
+	"word_highlights_draw_outlined": true,
+	"word_highlights_when_selection_is_empty": true,
+	"show_tab_close_buttons": false,
 
 	"font_options": ["subpixel_antialias"]
 }
