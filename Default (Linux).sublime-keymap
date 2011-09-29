@@ -5,5 +5,7 @@
   { "keys": ["ctrl+pagedown"], "command": "next_view_in_stack" },
   { "keys": ["ctrl+pageup"], "command": "prev_view_in_stack" },
 
-  { "keys": ["ctrl+shift+t"], "command": "print_theme_rule"}
+  { "keys": ["ctrl+shift+t"], "command": "print_theme_rule"},
+
+  { "keys": ["ctrl+alt+shift+q"], "command": "sort_css"}
 ]

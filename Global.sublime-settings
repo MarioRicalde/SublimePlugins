@@ -2,5 +2,6 @@
 // when upgrading
 {
   "show_tab_close_buttons": false,
-   "theme": "Soda Dark.sublime-theme"
+  "theme": "Soda Dark.sublime-theme",
+  "highlight_modified_tabs": true
 }
