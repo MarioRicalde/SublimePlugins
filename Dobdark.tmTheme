@@ -70,6 +70,19 @@
             </dict>
             <dict>
                 <key>name</key>
+                <string>Current Word</string>
+                <key>scope</key>
+                <string>currentword</string>
+                <key>settings</key>
+                <dict>
+                    <key>foreground</key>
+                    <string>#F8F8F8</string>
+                    <key>background</key>
+                    <string>#117004</string>
+                </dict>
+            </dict>
+            <dict>
+                <key>name</key>
                 <string>Comment</string>
                 <key>scope</key>
                 <string>comment</string>

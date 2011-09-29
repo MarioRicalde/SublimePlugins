@@ -6,7 +6,7 @@
 	"indent_guides_active_color_scope_name": "active_guide",
 	"indent_guides_color_scope_name": "guide",
 	"show_active_indent_guides": true,
-	"show_indent_guides": true,
+	"show_indent_guides": false,
 	"sort_css_on_save": false,
 	"tab_size": 2,
 	"translate_tabs_to_spaces": true,
@@ -17,6 +17,19 @@
 	"highlight_line": true,
 	"default_line_ending": "unix",
 	"shift_tab_unindent": true,
+	"default_line_ending": "unix",
+	"highlight_word_theme_selector": "currentword",
+	"word_highlights_draw_outlined": true,
+	"word_highlights_when_selection_is_empty": true,
+	"show_tab_close_buttons": false,
 
-	"font_options": ["subpixel_antialias"]
+	"font_options": ["subpixel_antialias"],
+
+	"draw_indent_guides": true,
+
+	// Controls how the indent guides are drawn, valid options are
+	// "draw_normal", "draw_active", "draw_stack" and "normal_stippled",
+	// "active_stippled" and "stack_stippled"
+	"indent_guide_options": ["draw_normal", "draw_stack",
+		"normal_stippled", "stack_stippled", "active_stippled"]
 }
