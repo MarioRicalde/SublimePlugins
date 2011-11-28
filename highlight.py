@@ -71,6 +71,9 @@ class HighlightCurrentWord(sublime_plugin.EventListener):
       # regions can have reversed start/ends so normalize them
       start = min(foundRegion.a, foundRegion.b)
       end = max(foundRegion.a, foundRegion.b)
+      if searchStart == end:
+        searchStart += 1
+        continue
       searchStart = end
 
       if foundRegion.empty() or foundRegion.intersects(currentRegion):
