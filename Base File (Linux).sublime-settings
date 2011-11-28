@@ -1,5 +1,5 @@
 {
 	"font_face": "Monospace",
 	"font_size": 10,
-  "rulers": [80]
+  "rulers": [80, 100]
 }

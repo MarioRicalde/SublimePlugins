@@ -33,6 +33,17 @@
             </dict>
             <dict>
                 <key>name</key>
+                <string>Borg Assignment LValue</string>
+                <key>scope</key>
+                <string>assignment.blarg</string>
+                <key>settings</key>
+                <dict>
+                    <key>foreground</key>
+                    <string>#CCB67A</string>
+                </dict>
+            </dict>
+            <dict>
+                <key>name</key>
                 <string>Guide</string>
                 <key>scope</key>
                 <string>guide</string>

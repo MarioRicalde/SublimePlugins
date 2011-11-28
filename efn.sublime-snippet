@@ -1,0 +1,11 @@
+<snippet>
+    <content><![CDATA[/**
+ * ${1}
+ */
+ewokui.${2:name}${3:.prototype} = function(${4:args}) {
+  ${5}
+};]]></content>
+    <tabTrigger>efn</tabTrigger>
+    <scope>source.js</scope>
+    <description>function with doctype</description>
+</snippet>

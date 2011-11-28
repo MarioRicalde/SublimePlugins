@@ -16,11 +16,12 @@
   { "keys": ["ctrl+shift+v"], "command": "paste" },
   { "keys": ["ctrl+alt+shift+v"], "command": "clipboard_history_paste" },
 
-  { "keys": ["ctrl+pagedown"], "command": "clipboard_history_next" },
-  { "keys": ["ctrl+pageup"], "command": "clipboard_history_previous" },
+  { "keys": ["ctrl+alt+pagedown"], "command": "clipboard_history_next" },
+  { "keys": ["ctrl+alt+pageup"], "command": "clipboard_history_previous" },
   { "keys": ["ctrl+shift+pageup"], "command": "clipboard_history_visualize" },
 
   { "keys": ["ctrl+shift+q"], "command": "example" },
   { "keys": ["ctrl+alt+q"], "command": "sort_css" },
-  { "keys": ["ctrl+shift+t"], "command": "print_theme_rule"}
+  { "keys": ["ctrl+shift+t"], "command": "print_theme_rule"},
+  { "keys": ["enter"], "command": "star_inserter"}
 ]
