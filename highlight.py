@@ -31,19 +31,20 @@ class HighlightCurrentWord(sublime_plugin.EventListener):
       return
 
     # The default separator does not include whitespace, so I add that here no matter what
-    separatorString = view.settings().get('word_separators') + u" \n\r"
+    separatorString = view.settings().get('word_separators') + u" \n\r\t"
     themeSelector = view.settings().get('highlight_word_theme_selector', 'comment')
 
     currentRegion = view.word(selections[0])
     currentWord = view.substr(currentRegion).strip(separatorString) # remove leading/trailing separator characters just in case
 
     #print u"|%s|" % currentWord
-    if(len(currentWord) == 0):
+    if len(currentWord) == 0:
       view.erase_regions(key)
       return
 
-    searchStart = self.previousRegion.a - len(currentWord)
-    searchEnd = self.previousRegion.b + len(currentWord)
+    size = view.size() - 1
+    searchStart = max(0, self.previousRegion.a - len(currentWord))
+    searchEnd = min(size, self.previousRegion.b + len(currentWord))
 
     # Reduce m*n search to just n by mapping each word separator character into a dictionary
     separators = {}
@@ -69,8 +70,11 @@ class HighlightCurrentWord(sublime_plugin.EventListener):
         break
 
       # regions can have reversed start/ends so normalize them
-      start = min(foundRegion.a, foundRegion.b)
-      end = max(foundRegion.a, foundRegion.b)
+      start = max(0, min(foundRegion.a, foundRegion.b))
+      end = min(size, max(foundRegion.a, foundRegion.b))
+      if searchStart == end:
+        searchStart += 1
+        continue
       searchStart = end
 
       if foundRegion.empty() or foundRegion.intersects(currentRegion):
@@ -79,10 +83,8 @@ class HighlightCurrentWord(sublime_plugin.EventListener):
       # check if the character before and after the region is a separator character
       # if it is not, then the region is part of a larger word and shouldn't match
       # this can't be done in a regex because we would be unable to use the word_separators setting string
-      leadingCharacter = view.substr(sublime.Region(start-1, start))
-      followingCharacter = view.substr(sublime.Region(end, end+1))
-      if start == 0 or leadingCharacter in separators:
-        if end == view.size()-1 or followingCharacter in separators:
+      if start == 0 or view.substr(sublime.Region(start - 1, start)) in separators:
+        if end == size or view.substr(sublime.Region(end, end + 1)) in separators:
           validRegions.append(foundRegion)
 
       if searchStart > searchEnd:
