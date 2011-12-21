@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>comment</key>
+  <string>Annotations</string>
+  <key>name</key>
+  <string>Annotations</string>
+  <key>scopeName</key>
+  <string>source.jsannotations</string>
+	<key>repository</key>
+	<dict>
+		<key>jsdoc_type</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>[a-zA-Z0-9\*$.!?=,:() |_&lt;&gt;]+</string>
+					<key>name</key>
+					<string>keyword.other.documentation.type.jsdoc</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>\{</string>
+					<key>end</key>
+					<string>\}</string>
+					<key>name</key>
+					<string>keyword.other.documentation.type.jsdoc</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#jsdoc_type</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+	</dict>
+  <key>patterns</key>
+	<array>
+		<dict>
+			<key>begin</key>
+			<string>(?x) # match * @param {type} arg Description.
+				^\s*\**\s*
+				((\@)(?:param)+)[ \t]*
+				(?:
+					\{
+						([a-zA-Z0-9\*$.!?=,:(){} |_&lt;&gt;]+)
+					\}[ \t]*
+					([a-zA-Z0-9_$]+)?
+				)?
+			</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.documentation.annotation.jsdoc</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.keyword.jsdoc</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.documentation.type.jsdoc</string>
+				</dict>
+				<key>4</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.documentation.variable.jsdoc</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(?=\s*\*\s*@)|(?=\s*\*\s*/)</string>
+			<key>name</key>
+			<string>meta.documentation.tag.param.jsdoc</string>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>(?x) # match * @type {
+				^\s*\**\s*
+				((\@)[a-zA-Z]+)[ \t]*
+				\{
+			</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.documentation.annotation.jsdoc</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.keyword.jsdoc</string>
+				</dict>
+				<key>3</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.documentation.type.jsdoc</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>\}</string>
+			<key>name</key>
+			<string>meta.documentation.tag.param.jsdoc</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#jsdoc_type</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>match</key>
+			<string>(?x) # match * @private
+				^\s*\**\s*
+				((\@)[a-zA-Z]+)[ \t]*
+			</string>
+			<key>captures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.other.documentation.annotation.jsdoc</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.keyword.jsdoc</string>
+				</dict>
+			</dict>
+			<key>name</key>
+			<string>meta.documentation.tag.param.jsdoc</string>
+		</dict>
+	</array>
+</dict>
+</plist>

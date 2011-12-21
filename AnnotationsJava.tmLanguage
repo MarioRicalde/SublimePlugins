@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>comment</key>
+  <string>Annotations - Java</string>
+  <key>name</key>
+  <string>Annotations - Java</string>
+  <key>scopeName</key>
+  <string>source.javaannotations</string>
+  <key>patterns</key>
+  <array>
+    <dict>
+      <key>begin</key>
+      <string>(?x) # match * @param arg Description.
+        ^\s*\**\s*
+        ((\@)param)[ \t]+
+        ([a-zA-Z0-9_$]+)?
+      </string>
+      <key>beginCaptures</key>
+      <dict>
+        <key>1</key>
+        <dict>
+          <key>name</key>
+          <string>keyword.other.documentation.annotation.javadoc</string>
+        </dict>
+        <key>2</key>
+        <dict>
+          <key>name</key>
+          <string>punctuation.definition.keyword.javadoc</string>
+        </dict>
+        <key>3</key>
+        <dict>
+          <key>name</key>
+          <string>keyword.other.documentation.variable.javadoc</string>
+        </dict>
+      </dict>
+      <key>end</key>
+      <string>(?=\s*\*\s*@)|(?=\s*\*\s*/)</string>
+      <key>name</key>
+      <string>meta.documentation.tag.param.javadoc</string>
+    </dict>
+    <dict>
+      <key>match</key>
+      <string>(?x) # match * @private
+        ^\s*\**\s*
+        ((\@)[a-zA-Z]+)[ \t]*
+      </string>
+      <key>captures</key>
+      <dict>
+        <key>1</key>
+        <dict>
+          <key>name</key>
+          <string>keyword.other.documentation.annotation.javadoc</string>
+        </dict>
+        <key>2</key>
+        <dict>
+          <key>name</key>
+          <string>punctuation.definition.keyword.javadoc</string>
+        </dict>
+      </dict>
+      <key>name</key>
+      <string>meta.documentation.tag.param.javadoc</string>
+    </dict>
+  </array>
+</dict>
+</plist>
