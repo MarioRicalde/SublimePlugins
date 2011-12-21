@@ -33,6 +33,19 @@
             </dict>
             <dict>
                 <key>name</key>
+                <string>Bracket Match</string>
+                <key>scope</key>
+                <string>bracketmatch</string>
+                <key>settings</key>
+                <dict>
+                    <key>foreground</key>
+                    <string>#F8F8F8</string>
+                    <key>background</key>
+                    <string>#117004</string>
+                </dict>
+            </dict>
+            <dict>
+                <key>name</key>
                 <string>Borg Assignment LValue</string>
                 <key>scope</key>
                 <string>assignment.blarg</string>
@@ -89,7 +102,7 @@
                     <key>foreground</key>
                     <string>#F8F8F8</string>
                     <key>background</key>
-                    <string>#117004</string>
+                    <string>#0D4F03</string>
                 </dict>
             </dict>
             <dict>
@@ -149,6 +162,8 @@
                 <dict>
                     <key>foreground</key>
                     <string>#FB9933</string>
+                    <key>fontStyle</key>
+                    <string>none</string>
                 </dict>
             </dict>
             <dict>
@@ -160,6 +175,8 @@
                 <dict>
                     <key>foreground</key>
                     <string>#9C67D8</string>
+                    <key>fontStyle</key>
+                    <string>none</string>
                 </dict>
             </dict>
             <dict>
@@ -171,6 +188,8 @@
                 <dict>
                     <key>foreground</key>
                     <string>#FFFFFF</string>
+                    <key>fontStyle</key>
+                    <string>none</string>
                 </dict>
             </dict>
             <dict>

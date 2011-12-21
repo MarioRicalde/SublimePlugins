@@ -23,5 +23,17 @@
   { "keys": ["ctrl+shift+q"], "command": "example" },
   { "keys": ["ctrl+alt+q"], "command": "sort_css" },
   { "keys": ["ctrl+shift+t"], "command": "print_theme_rule"},
-  { "keys": ["enter"], "command": "star_inserter"}
+  { "keys": ["enter"], "command": "star_inserter"},
+
+  {
+    "keys": ["#"],
+    "command": "insert_snippet",
+    "args" : { "contents": "#{$0}" },
+    "context":[{
+      "key": "selector",
+      "operator": "equal",
+      "operand": "string.quoted.double.ruby",
+      "match_all": true
+    }]
+  }
 ]

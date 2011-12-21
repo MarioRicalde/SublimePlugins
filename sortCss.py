@@ -69,7 +69,7 @@ class CssSorter:
 
       start = region.a+1
       scope = self.view.scope_name(region.a)
-      syntax = scope.strip().split(' ')[-1]
+      syntax = scope.strip().split(' ')[0]
       if not syntax in scopes:
         continue
       self.scopes = scopes[syntax]
