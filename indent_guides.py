@@ -1,6 +1,7 @@
 import sublime
 import sublime_plugin
 import indentation
+import datetime
 import re
 
 
@@ -10,7 +11,10 @@ class IndentGuidesListener(sublime_plugin.EventListener):
     self.guides = []
     self.current_tab = None
     self.region = None
+    self.current_region = None
+    sublime.set_timeout(self.on_timer, 50)
 
+  # Counts the real number of spaces on a line and uses a cache.
   def get_indent(self, region, view, tab_size):
     pos = 0
     tabs = []
@@ -33,6 +37,7 @@ class IndentGuidesListener(sublime_plugin.EventListener):
       self.cache[line] = tabs
     return self.cache[line]
 
+  # Redraw all indent guides on the page
   def refresh(self, view, clear_cache):
     if clear_cache:
       self.cache = {}
@@ -45,6 +50,7 @@ class IndentGuidesListener(sublime_plugin.EventListener):
       self.current_tab = tab
 
     visible = view.visible_region()
+    self.region = visible
     expanded_region = sublime.Region(max(visible.a - 250, 0), min(visible.b + 5, view.size()))
     visible_regions = view.split_by_newlines(visible)
 
@@ -65,10 +71,7 @@ class IndentGuidesListener(sublime_plugin.EventListener):
     if len(start_indent) <= 0:
       return 0
 
-    print 'loop'
-    print start_indent
     while True:
-      print start
       if start.a <= 0:
         return 0
       if start.b >= view.size():
@@ -109,8 +112,6 @@ class IndentGuidesListener(sublime_plugin.EventListener):
     else:
       before = self.check_indent(view, region, False, tab_size)
       after = self.check_indent(view, region, True, tab_size)
-      print cursorCol, tab, pos
-      print before, after
 
       if after <= 0:
         tab -= 1
@@ -127,3 +128,11 @@ class IndentGuidesListener(sublime_plugin.EventListener):
 
   def on_modified(self, view):
     self.refresh(view, True)
+
+  def on_timer(self):
+    sublime.set_timeout(self.on_timer, 50)
+    view = sublime.active_window().active_view()
+    region = view.visible_region()
+    if self.region == None or self.region.a != region.a or self.region.b != region.b:
+      #print datetime.datetime.now()
+      self.refresh(view, False)
