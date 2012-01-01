@@ -101,12 +101,8 @@ class CssSorter:
           return start
         start = region.b
       else:
-        # semicolons after @include aren't included with the rule so we have to ignore that in a semi-generic way
-        if scope.startswith(self.scopes['list'][0]):
-          start += 1
-        else:
           # we hit a non-rule like a nested selector
-          return start
+        return start
 
   def parseBlock(self, start, end):
     # grab the current content in this region
@@ -169,9 +165,6 @@ class CssSorter:
 
         ruleStart, ruleEnd = bounds[0][0], bounds[-1][1]
 
-        # The @include scopes do not include the trailing semi colon :(
-        while self.view.substr(ruleEnd) == u';':
-          ruleEnd += 1
 
         rules.append(self.prepareRule(start, ruleStart, ruleEnd))
         start, matchedRule = ruleEnd, True
