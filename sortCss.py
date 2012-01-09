@@ -28,7 +28,8 @@ scopes = {
       ['meta.property-name.css', 'meta.property-value.css'],
       ['meta.set.variable'],
       ['variable.scss', 'meta.property-value.css'],
-      ['meta.at-rule.include.css']
+      ['meta.at-rule.include.css'],
+      ['meta.at-rule.import.css']
     ],
     'ignore': [
       'comment.block.scss'
