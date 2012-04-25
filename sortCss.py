@@ -83,13 +83,14 @@ class CssSorter:
       # So, in this case, we have to keep iterating as long as the regions/scopes contain property-list.css
       # .test4 {-moz-border-radius: 1px;border-top-width: 1px;border: none;border-bottom-width: 1px;}
       end = self.parseableRegion(start)
+
       self.parseBlock(start, end)
       start = end
 
   def parseableRegion(self, start):
     while True:
       c = self.view.substr(start)
-      if c == ' ' or c == '\n':
+      if c == ' ' or c == '\n' or c == '\t':
         start += 1
         continue
 
@@ -203,7 +204,7 @@ class CssSorter:
   def parseToScope(self, start, blockEnd, targetScope):
     while start < blockEnd:
       c = self.view.substr(start)
-      if c == ' ' or c == '\n':
+      if c == ' ' or c == '\n' or c == '\t':
         start += 1
         continue
 
