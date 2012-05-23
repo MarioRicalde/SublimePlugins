@@ -84,13 +84,14 @@ class CssSorter:
       # So, in this case, we have to keep iterating as long as the regions/scopes contain property-list.css
       # .test4 {-moz-border-radius: 1px;border-top-width: 1px;border: none;border-bottom-width: 1px;}
       end = self.parseableRegion(start)
+
       self.parseBlock(start, end)
       start = end
 
   def parseableRegion(self, start):
     while True:
       c = self.view.substr(start)
-      if c == ' ' or c == '\n':
+      if c == ' ' or c == '\n' or c == '\t':
         start += 1
         continue
 
@@ -102,8 +103,12 @@ class CssSorter:
           return start
         start = region.b
       else:
+        # semicolons after @include aren't included with the rule so we have to ignore that in a semi-generic way
+        if scope.startswith(self.scopes['list'][0]):
+          start += 1
+        else:
           # we hit a non-rule like a nested selector
-        return start
+          return start
 
   def parseBlock(self, start, end):
     # grab the current content in this region
@@ -166,6 +171,9 @@ class CssSorter:
 
         ruleStart, ruleEnd = bounds[0][0], bounds[-1][1]
 
+        # The @include scopes do not include the trailing semi colon :(
+        while self.view.substr(ruleEnd) == u';':
+          ruleEnd += 1
 
         rules.append(self.prepareRule(start, ruleStart, ruleEnd))
         start, matchedRule = ruleEnd, True
@@ -197,7 +205,7 @@ class CssSorter:
   def parseToScope(self, start, blockEnd, targetScope):
     while start < blockEnd:
       c = self.view.substr(start)
-      if c == ' ' or c == '\n':
+      if c == ' ' or c == '\n' or c == '\t':
         start += 1
         continue
 
